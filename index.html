@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Projectile Motion Task</title>
+    <style>
+        .container {
+            width: 500px;
+            margin: auto;
+            padding: 26px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        hr {
+            width: 50px;
+        }
+
+        .content {
+            padding: 16px;
+        }
+
+        input,
+        button {
+            display: block;
+            width: 100%;
+            font-size: 21px;
+            border-radius: 6px;
+            border: none;
+            padding: 10px;
+            margin-block: 16px;
+        }
+
+        input {
+            box-shadow: 0 0 7px #80808061;
+            width: 95.8%;
+        }
+
+        #submit-btn,
+        #reset-btn {
+            background-color: rgb(68, 68, 255);
+            color: white;
+            cursor: pointer;
+        }
+
+        #submit-btn:disabled,
+        #reset-btn:disabled {
+            background-color: rgb(134, 134, 255) !important;
+            cursor: not-allowed;
+        }
+
+        #myCanvas {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Projectile Motion Task</h1>
+        <hr />
+
+        <div class="content">
+            <div class="inputs">
+                <input type="text" placeholder="Initial velocity" id="velocity" value="">
+                <input type="text" placeholder="Projection angle" id="angle" value="">
+                <button id="submit-btn" onclick="calculate()">Launch</button>
+            </div>
+
+            <canvas id="myCanvas" width="400" height="300"
+                style="display:block;border-left:1px solid #d3d3d3;border-bottom:1px solid #d3d3d3;">
+                Your browser does not support the HTML canvas tag.</canvas>
+
+            <div class="distance">
+                Covered distance : <span id="result"></span>
+            </div>
+            <button id="reset-btn" onclick="reset()" disabled>Reset</button>
+        </div>
+
+    </div>
+    <script>
+        let angle = document.getElementById('angle');
+        let velocity = document.getElementById('velocity');
+        let submitBtn = document.getElementById('submit-btn');
+        let resetBtn = document.getElementById('reset-btn');
+        let result = document.getElementById('result');
+
+        let c = document.getElementById("myCanvas");
+        let ctx = c.getContext("2d");
+        let vx, vy ,range;
+
+        function calculate() {
+            //set inputs disabled
+            velocity.setAttribute('disabled', true)
+            angle.setAttribute('disabled', true)
+            submitBtn.setAttribute('disabled', true)
+            resetBtn.removeAttribute('disabled')
+            //calculate vx,vy
+            vy = velocity.value * Math.sin(angle.value)
+            vx = velocity.value * Math.cos(angle.value)
+
+            r = Math.pow(velocity.value, 2) * Math.sin(2*angle.value)  / 9.8;
+            result.innerHTML = r
+
+            //draw path
+            ctx.beginPath()
+            ctx.moveTo(0, 300);
+            ctx.lineTo(vx, vy);
+            ctx.stroke();
+        }
+
+        function reset() {
+            // reset values
+            angle.value = "";
+            velocity.value = "";
+            //set inputs enabled
+            velocity.removeAttribute('disabled', false)
+            angle.removeAttribute('disabled', false)
+            submitBtn.removeAttribute('disabled', false)
+            resetBtn.setAttribute('disabled', true)
+            //clear path
+            ctx.clearRect(0, 0, c.width, c.height);
+        }
+    </script>
+</body>
+
+</html>
